@@ -79,7 +79,7 @@ const addToDom = async () => {
     div.className = "grid-item";
     grid.append(div);
     // call create tile method, and add tiles 
-    div.innerHTML = await createTile();
+    div.innerHTML = await crateTile();
 };
 
 // Remove form from screen
