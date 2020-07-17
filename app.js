@@ -9,7 +9,6 @@ function Dino(index, data) {
 }
 
 // Create Dino Objects
-
 //Insert human at a particular index (middle)
 function insertAt(array, index, ...elementsArray) {
     array.splice(index, 0, ...elementsArray);
@@ -22,27 +21,35 @@ const dinos = async () => {
     return data;
 };
 
-// Create Human Object
-const human = {
-    feet: document.getElementById("feet").value
-    // weight: document.getElementById("weight").value,
-    // diet: document.getElementById("diet").value,
-    // test: "foo"
-};
+// Create Human class 
+class Human {
+    constructor() {
+      this.name =  document.getElementById("name").value;
+      this.feet = document.getElementById("feet").value;
+      this.weight = document.getElementById("weight").value;
+      this.diet = document.getElementById("diet").value;
+    }
+  }
+
 
 // Use IIFE to get human data from form
-const humanData = (async () => {
-    name = document.getElementById("name").value;
-    feet = document.getElementById("feet").value;
-    weight = document.getElementById("weight").value;
-    diet = document.getElementById("diet").value;
-})();
+const humanData = async () => {
+
+    let name = document.getElementById("name").value;
+    let feet = document.getElementById("feet").value;
+    let weight = document.getElementById("weight").value;
+    let diet = document.getElementById("diet").value;
+    const arr = []
+    arr.push(name, feet, weight, diet)
+    return arr
+};
 
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
 const compareHeight = async (idx, data) => {
+    const human = await humanData()
     dinoDataHeight = parseInt(data);
-    humanDataFeet = parseInt(document.getElementById("feet").value) || 0;
+    humanDataFeet = parseInt(document.getElementById("feet").value)  || 0;
     humnaDataInches = parseInt(document.getElementById("inches").value) || 0;
     totalHumanHeight = humanDataFeet * 12 + humnaDataInches;
     return `It's height: ${dinoDataHeight}, your height: ${totalHumanHeight} inches`;
@@ -90,22 +97,27 @@ const removeForm = async () => {
 
 // On button click, prepare and display infographic
 document.getElementById("btn").onclick = async () => {
+
+    // remove form, and prepare to show data 
     removeForm();
-    val = document.getElementById("name").value;
+
+    // create human object 
+    const human = new Human()
+
+   // get dino data 
     let data = await dinos();
 
-    //get data from human object 
-    console.log(`MY NAME IS ${human.name}`)
-
-    insertAt(data["Dinos"], 4, { species: val });
+   
+    // Insert Human data into the array 
+    insertAt(data["Dinos"], 4, { species: human.name });
 
     for (x in data["Dinos"]) {
-        //Instantiate dino object
 
+        //Instantiate dino object
         dino = new Dino(x, data);
 
         if (x == 4) {
-            name = val;
+            name = human.name;
             image = "human";
             fact = "";
             compareH = "";
