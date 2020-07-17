@@ -9,6 +9,7 @@ function Dino(index, data) {
 }
 
 // Create Dino Objects
+
 //Insert human at a particular index (middle)
 function insertAt(array, index, ...elementsArray) {
     array.splice(index, 0, ...elementsArray);
@@ -26,48 +27,36 @@ class Human {
     constructor() {
       this.name =  document.getElementById("name").value;
       this.feet = document.getElementById("feet").value;
+      this.inches = document.getElementById("inches").value;
       this.weight = document.getElementById("weight").value;
       this.diet = document.getElementById("diet").value;
     }
   }
 
 
-// Use IIFE to get human data from form
-const humanData = async () => {
-
-    let name = document.getElementById("name").value;
-    let feet = document.getElementById("feet").value;
-    let weight = document.getElementById("weight").value;
-    let diet = document.getElementById("diet").value;
-    const arr = []
-    arr.push(name, feet, weight, diet)
-    return arr
-};
-
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
-const compareHeight = async (idx, data) => {
-    const human = await humanData()
-    dinoDataHeight = parseInt(data);
-    humanDataFeet = parseInt(document.getElementById("feet").value)  || 0;
-    humnaDataInches = parseInt(document.getElementById("inches").value) || 0;
+const compareHeight = async (human, dino) => {
+    dinoDataHeight = parseInt(dino);
+    humanDataFeet = parseInt(human.feet)  || 0;
+    humnaDataInches = parseInt(human.inches) || 0;
     totalHumanHeight = humanDataFeet * 12 + humnaDataInches;
     return `It's height: ${dinoDataHeight}, your height: ${totalHumanHeight} inches`;
 };
 
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
-const compareWeight = async (idx, data) => {
-    dinoDataWeight = parseFloat(data);
-    humanDataWeight = parseFloat(document.getElementById("weight").value) || 0;
+const compareWeight = async (human, dino) => {
+    dinoDataWeight = parseFloat(dino);
+    humanDataWeight = parseFloat(human.weight) || 0;
     return `Dino weight: ${dinoDataWeight} Your weight: ${humanDataWeight} lbs`;
 };
 
 // Create Dino Compare Method 3
 // NOTE: Weight in JSON file is in lbs, height in inches.
-const compareDiet = async (idx, data) => {
-    dinoDiet = data;
-    humanDiet = document.getElementById("diet").value || "both?";
+const compareDiet = async (human, dino) => {
+    dinoDiet = dino;
+    humanDiet = human.diet || "both?";
     return `Dino diet: ${dinoDiet} Your diet: ${humanDiet} `;
 };
 
@@ -106,7 +95,6 @@ document.getElementById("btn").onclick = async () => {
 
    // get dino data 
     let data = await dinos();
-
    
     // Insert Human data into the array 
     insertAt(data["Dinos"], 4, { species: human.name });
@@ -130,9 +118,9 @@ document.getElementById("btn").onclick = async () => {
             dinoHeight = dino.height;
             dinoWeight = dino.weight;
             dinoDiet = dino.diet;
-            compareH = await compareHeight(x, dinoHeight);
-            compareW = await compareWeight(x, dinoWeight);
-            compareD = await compareDiet(x, dinoDiet);
+            compareH = await compareHeight(human, dinoHeight);
+            compareW = await compareWeight(human, dinoWeight);
+            compareD = await compareDiet(human, dinoDiet);
         }
 
         // Randomly assign one fact
